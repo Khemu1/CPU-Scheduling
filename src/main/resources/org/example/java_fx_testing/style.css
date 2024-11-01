@@ -1,0 +1,73 @@
+
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+
+.bottom-border {
+    -fx-border-style: solid;
+    -fx-border-width: 0 0 2px 0;
+    -fx-border-color: gray;
+}
+
+.bold-text {
+    -fx-font-size: 40px;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.text-field {
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-padding: 5px;
+    -fx-background-color: white;
+}
+
+.button {
+    -fx-background-color: #007bff; 
+    -fx-text-fill: white;
+    -fx-border-radius: 5px; 
+    -fx-padding: 10px 15px;
+    -fx-font-size: 14px;
+}
+
+.clear-button {
+
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-border-radius: 5px;
+    -fx-padding: 10px 15px;
+    -fx-font-size: 14px;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+}
+
+.hbox {
+    -fx-spacing: 10;
+    -fx-padding: 10;
+}
+
+.vbox {
+    -fx-spacing: 15;
+}
+
+.border {
+    -fx-border-color: #ccc;
+    -fx-border-style: solid;
+    -fx-border-width: 1px;
+    -fx-padding: 10;
+}
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #ccc;
+    -fx-border-width: 1px;
+}
