@@ -116,20 +116,19 @@ public class Controller {
         executionOrderTable.refresh();
     }
 
-    // Placeholder methods for other scheduling algorithms
     @FXML
     public void handleRunSJFButtonAction(ActionEvent actionEvent) {
-        // SJF.shortestJobFirst();
+         SJF.shortestJobFirst(processList,executionOrderList);
 
     }
 
     @FXML
     public void handleRunRRButtonAction(ActionEvent actionEvent) {
-       //  RR.runRoundRobin();
+         RR.runRoundRobin(processList,executionOrderList,Integer.parseInt(timeQuantumField.getText()));
     }
 
     @FXML
     public void handleRunPriorityButtonAction(ActionEvent actionEvent) {
-       // Priority.runPriority();
+        Priority.runPriority(processList,executionOrderList);
     }
 }
