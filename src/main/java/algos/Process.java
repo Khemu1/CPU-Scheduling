@@ -4,25 +4,65 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class Process {
-    private final String processNumber; // Identifier for the process
-    private final int cpuTime;           // CPU time required
-    private final int priority;          // Priority level (for priority scheduling)
-    private final StringProperty status;  // Status property as StringProperty
-    private final int arrivalTime;       // Arrival time for FCFS
-    private int completionTime;          // Completion time after scheduling
-    private int turnaroundTime;          // Turnaround time for the process
-    private int waitingTime;             // Waiting time for the process
+    /**
+     * unique identifier for the process.
+     */
+    private final String processNumber;
 
-    // Constructor
+    /**
+     * total CPU time required for the process to execute.
+     * This value represents the burst time needed by the process.
+     */
+    private final int cpuTime;
+
+    /**
+     * priority level of the process.
+     */
+    private final int priority;
+
+    /**
+     * status of the process, represented as a StringProperty.
+     * opted for StringProperty to since i'm since i need to make the change be reflected in the UI
+     * This field can reflect different states such as "Ready", "Running", or "Completed".
+     */
+    private final StringProperty status;
+
+    /**
+     * time at which the process arrives in the ready queue.
+     *
+     */
+    private final int arrivalTime;
+
+    /**
+     * time at which the process completes its execution.
+     */
+    private int completionTime;
+
+    /**
+     * total time taken from arrival to completion.
+     */
+    private int turnaroundTime;
+
+    /**
+     * total time the process has been waiting in the ready queue.
+     */
+    private int waitingTime;
+
+    /**
+     * @param processNumber The unique identifier for the process.
+     * @param cpuTime The total CPU time required for the process execution (burst time).
+     * @param priority The priority level of the process (lower values indicate higher priority).
+     * @param arrivalTime The time at which the process arrives in the ready queue.
+     */
     public Process(String processNumber, int cpuTime, int priority, int arrivalTime) {
         this.processNumber = processNumber;
         this.cpuTime = cpuTime;
         this.priority = priority;
         this.arrivalTime = arrivalTime;
-        this.status = new SimpleStringProperty("Ready"); // Initialize status
+        this.status = new SimpleStringProperty("Ready");
     }
 
-    // Getters
+    // getters
     public String getProcessNumber() {
         return processNumber;
     }
@@ -36,11 +76,11 @@ public class Process {
     }
 
     public String getStatus() {
-        return status.get(); // Get the current status
+        return status.get();
     }
 
     public StringProperty statusProperty() {
-        return status; // Return the StringProperty for binding
+        return status;
     }
 
     public int getCompletionTime() {
@@ -59,7 +99,7 @@ public class Process {
         return waitingTime;
     }
 
-    // Setters
+    // setters
     public void setCompletionTime(int completionTime) {
         this.completionTime = completionTime;
     }
@@ -73,6 +113,6 @@ public class Process {
     }
 
     public void setStatus(String status) {
-        this.status.set(status); // Set the status property
+        this.status.set(status);
     }
 }

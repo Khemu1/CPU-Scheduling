@@ -10,7 +10,7 @@ public class FCFS {
 
     /**
      * Runs the First-Come, First-Served (FCFS) scheduling algorithm.
-     * The algo works as normal queue it executes based in entered order
+     * The algo works as a normal queue it executes based in entered order
      *
      * @param processList        An ObservableList of processes to be scheduled.
      * @param executionOrderList An ObservableList to keep track of the execution order of processes.
@@ -23,7 +23,7 @@ public class FCFS {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws InterruptedException {
-                int currentTime = 0; // Initialize current time
+                int currentTime = 0;
 
                 for (Process process : processList) {
                     if (currentTime < process.getArrivalTime()) {
@@ -35,16 +35,21 @@ public class FCFS {
 
                     Thread.sleep(1000);
 
-                    currentTime += process.getCpuTime();
+                    currentTime += process.getCpuTime(); // aka burst time
 
                     Utils.updateProcessTiming(process, currentTime);
 
-                    ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(), process.getArrivalTime());
+                    int turnaroundTime = currentTime - process.getArrivalTime();
+                    int waitingTime = turnaroundTime - process.getCpuTime();
+
+                    process.setTurnaroundTime(turnaroundTime);
+                    process.setWaitingTime(waitingTime);
+
+                    ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(), process.getArrivalTime(), process.getCpuTime());
                     executionOrderList.add(executionOrder);
                 }
                 return null;
             }
-
         };
 
         new Thread(task).start();

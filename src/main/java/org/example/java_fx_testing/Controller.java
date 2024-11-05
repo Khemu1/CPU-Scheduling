@@ -14,10 +14,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 public class Controller {
 
-    // Process TableView and its columns
     @FXML
     private TableView<Process> processTable;
-
     @FXML
     private TableColumn<Process, String> processNumberColumn;
     @FXML
@@ -26,8 +24,9 @@ public class Controller {
     private TableColumn<Process, Number> priorityColumn;
     @FXML
     private TableColumn<Process, String> statusColumn;
+    @FXML
+    private  TableColumn<Process,Number> arrivalTimeColumnProcess;
 
-    // Input fields for adding new processes
     @FXML
     private TextField processNumberField;
     @FXML
@@ -37,40 +36,60 @@ public class Controller {
     @FXML
     private TextField timeQuantumField;
 
-    // Execution Order TableView and its columns
     @FXML
     private TableView<ExecutionOrder> executionOrderTable;
-
     @FXML
     private TableColumn<ExecutionOrder, String> executionOrderColumn;
     @FXML
     private TableColumn<ExecutionOrder, String> executionProcessColumn;
     @FXML
-    private TableColumn<ExecutionOrder, Number> arrivalTimeColumn; // New Column
+    private TableColumn<ExecutionOrder, Number> arrivalTimeColumn;
+    @FXML
+    private TableColumn<ExecutionOrder, Number> turnaroundTimeColumn;
+    @FXML
+    private TableColumn<ExecutionOrder, Number> waitingTimeColumn;
+
 
     // Observable list to hold processes
     private final ObservableList<Process> processList = FXCollections.observableArrayList();
     private final ObservableList<ExecutionOrder> executionOrderList = FXCollections.observableArrayList();
+
+    // Observable list to hold processes
     private SortedList<ExecutionOrder> sortedExecutionOrderList;
     @FXML
 
     public void initialize() {
+
         // Initialize process table columns
+        arrivalTimeColumnProcess.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         processNumberColumn.setCellValueFactory(new PropertyValueFactory<>("processNumber"));
         cpuTimeColumn.setCellValueFactory(new PropertyValueFactory<>("cpuTime"));
         priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Ensure your processTable is populated
+
         processTable.setItems(processList);
-        setTableColumnProperties(processNumberColumn, cpuTimeColumn, priorityColumn, statusColumn);
+
+        processTable.widthProperty().addListener((obs, oldWidth, newWidth) -> {
+            double tableWidth = newWidth.doubleValue();
+
+            arrivalTimeColumnProcess.setPrefWidth(tableWidth * 0.2);
+            processNumberColumn.setPrefWidth(tableWidth * 0.2);
+            cpuTimeColumn.setPrefWidth(tableWidth * 0.2);
+            priorityColumn.setPrefWidth(tableWidth * 0.2);
+            statusColumn.setPrefWidth(tableWidth * 0.2);
+        });
+
+        setTableColumnProperties(arrivalTimeColumnProcess, processNumberColumn, cpuTimeColumn, priorityColumn, statusColumn);
 
         // Initialize execution order table columns
         executionOrderColumn.setCellValueFactory(new PropertyValueFactory<>("completionTime"));
         executionProcessColumn.setCellValueFactory(new PropertyValueFactory<>("processNumber"));
         arrivalTimeColumn.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
+        turnaroundTimeColumn.setCellValueFactory(new PropertyValueFactory<>("turnaroundTime"));
+        waitingTimeColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTime"));
 
-        // Ensure your execution order table is populated
+
         executionOrderTable.setItems(executionOrderList);
     }
 
@@ -96,7 +115,6 @@ public class Controller {
 
         processList.add(newProcess);
 
-        // Clear the input fields
         processNumberField.clear();
         cpuTimeField.clear();
         priorityField.clear();
@@ -112,6 +130,8 @@ public class Controller {
     @FXML
     public void handleRunFCFSButtonAction(ActionEvent actionEvent) throws InterruptedException {
         FCFS.runFCFS(processList, executionOrderList);
+        if(executionOrderList.size() !=0)
+            executionOrderList.clear();
         processTable.refresh();
         executionOrderTable.refresh();
     }
@@ -119,16 +139,22 @@ public class Controller {
     @FXML
     public void handleRunSJFButtonAction(ActionEvent actionEvent) {
          SJF.shortestJobFirst(processList,executionOrderList);
+        if(executionOrderList.size() !=0)
+            executionOrderList.clear();
 
     }
 
     @FXML
     public void handleRunRRButtonAction(ActionEvent actionEvent) {
          RR.runRoundRobin(processList,executionOrderList,Integer.parseInt(timeQuantumField.getText()));
+        if(executionOrderList.size() !=0)
+            executionOrderList.clear();
     }
 
     @FXML
     public void handleRunPriorityButtonAction(ActionEvent actionEvent) {
         Priority.runPriority(processList,executionOrderList);
+        if(executionOrderList.size() !=0)
+            executionOrderList.clear();
     }
 }
