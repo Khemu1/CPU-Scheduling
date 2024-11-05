@@ -22,8 +22,10 @@ public class Process {
 
     /**
      * status of the process, represented as a StringProperty.
-     * opted for StringProperty to since i'm since i need to make the change be reflected in the UI
-     * This field can reflect different states such as "Ready", "Running", or "Completed".
+     * opted for StringProperty to since i'm since i need to make the change be
+     * reflected in the UI
+     * This field can reflect different states such as "Ready", "Running", or
+     * "Completed".
      */
     private final StringProperty status;
 
@@ -50,9 +52,12 @@ public class Process {
 
     /**
      * @param processNumber The unique identifier for the process.
-     * @param cpuTime The total CPU time required for the process execution (burst time).
-     * @param priority The priority level of the process (lower values indicate higher priority).
-     * @param arrivalTime The time at which the process arrives in the ready queue.
+     * @param cpuTime       The total CPU time required for the process execution
+     *                      (burst time).
+     * @param priority      The priority level of the process (lower values indicate
+     *                      higher priority).
+     * @param arrivalTime   The time at which the process arrives in the ready
+     *                      queue.
      */
     public Process(String processNumber, int cpuTime, int priority, int arrivalTime) {
         this.processNumber = processNumber;

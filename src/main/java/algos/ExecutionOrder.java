@@ -15,6 +15,7 @@ public class ExecutionOrder {
         this.waitingTime = turnaroundTime - burstTime;
     }
 
+    //
     public int getCompletionTime() {
         return completionTime;
     }

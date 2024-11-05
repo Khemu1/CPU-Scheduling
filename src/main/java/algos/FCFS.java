@@ -13,7 +13,8 @@ public class FCFS {
      * The algo works as a normal queue it executes based in entered order
      *
      * @param processList        An ObservableList of processes to be scheduled.
-     * @param executionOrderList An ObservableList to keep track of the execution order of processes.
+     * @param executionOrderList An ObservableList to keep track of the execution
+     *                           order of processes.
      */
 
     public static void runFCFS(ObservableList<Process> processList, ObservableList<ExecutionOrder> executionOrderList) {
@@ -45,7 +46,8 @@ public class FCFS {
                     process.setTurnaroundTime(turnaroundTime);
                     process.setWaitingTime(waitingTime);
 
-                    ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(), process.getArrivalTime(), process.getCpuTime());
+                    ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(),
+                            process.getArrivalTime(), process.getCpuTime());
                     executionOrderList.add(executionOrder);
                 }
                 return null;

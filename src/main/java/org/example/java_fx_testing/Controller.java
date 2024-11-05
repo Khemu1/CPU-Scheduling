@@ -25,7 +25,7 @@ public class Controller {
     @FXML
     private TableColumn<Process, String> statusColumn;
     @FXML
-    private  TableColumn<Process,Number> arrivalTimeColumnProcess;
+    private TableColumn<Process, Number> arrivalTimeColumnProcess;
 
     @FXML
     private TextField processNumberField;
@@ -49,13 +49,13 @@ public class Controller {
     @FXML
     private TableColumn<ExecutionOrder, Number> waitingTimeColumn;
 
-
     // Observable list to hold processes
     private final ObservableList<Process> processList = FXCollections.observableArrayList();
     private final ObservableList<ExecutionOrder> executionOrderList = FXCollections.observableArrayList();
 
     // Observable list to hold processes
     private SortedList<ExecutionOrder> sortedExecutionOrderList;
+
     @FXML
 
     public void initialize() {
@@ -66,7 +66,6 @@ public class Controller {
         cpuTimeColumn.setCellValueFactory(new PropertyValueFactory<>("cpuTime"));
         priorityColumn.setCellValueFactory(new PropertyValueFactory<>("priority"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
 
         processTable.setItems(processList);
 
@@ -80,7 +79,8 @@ public class Controller {
             statusColumn.setPrefWidth(tableWidth * 0.2);
         });
 
-        setTableColumnProperties(arrivalTimeColumnProcess, processNumberColumn, cpuTimeColumn, priorityColumn, statusColumn);
+        setTableColumnProperties(arrivalTimeColumnProcess, processNumberColumn, cpuTimeColumn, priorityColumn,
+                statusColumn);
 
         // Initialize execution order table columns
         executionOrderColumn.setCellValueFactory(new PropertyValueFactory<>("completionTime"));
@@ -89,11 +89,8 @@ public class Controller {
         turnaroundTimeColumn.setCellValueFactory(new PropertyValueFactory<>("turnaroundTime"));
         waitingTimeColumn.setCellValueFactory(new PropertyValueFactory<>("waitingTime"));
 
-
         executionOrderTable.setItems(executionOrderList);
     }
-
-
 
     private void setTableColumnProperties(TableColumn<?, ?>... columns) {
         for (TableColumn<?, ?> column : columns) {
@@ -130,7 +127,7 @@ public class Controller {
     @FXML
     public void handleRunFCFSButtonAction(ActionEvent actionEvent) throws InterruptedException {
         FCFS.runFCFS(processList, executionOrderList);
-        if(executionOrderList.size() !=0)
+        if (executionOrderList.size() != 0)
             executionOrderList.clear();
         processTable.refresh();
         executionOrderTable.refresh();
@@ -138,23 +135,23 @@ public class Controller {
 
     @FXML
     public void handleRunSJFButtonAction(ActionEvent actionEvent) {
-         SJF.shortestJobFirst(processList,executionOrderList);
-        if(executionOrderList.size() !=0)
+        SJF.shortestJobFirst(processList, executionOrderList);
+        if (executionOrderList.size() != 0)
             executionOrderList.clear();
 
     }
 
     @FXML
     public void handleRunRRButtonAction(ActionEvent actionEvent) {
-         RR.runRoundRobin(processList,executionOrderList,Integer.parseInt(timeQuantumField.getText()));
-        if(executionOrderList.size() !=0)
+        RR.runRoundRobin(processList, executionOrderList, Integer.parseInt(timeQuantumField.getText()));
+        if (executionOrderList.size() != 0)
             executionOrderList.clear();
     }
 
     @FXML
     public void handleRunPriorityButtonAction(ActionEvent actionEvent) {
-        Priority.runPriority(processList,executionOrderList);
-        if(executionOrderList.size() !=0)
+        Priority.runPriority(processList, executionOrderList);
+        if (executionOrderList.size() != 0)
             executionOrderList.clear();
     }
 }
