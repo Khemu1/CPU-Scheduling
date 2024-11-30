@@ -12,13 +12,11 @@ public class Utils {
      * @param currentTime  The current time after the process runs.
      * @throws InterruptedException If the thread is interrupted during sleep.
      */
-    public static  void updateProcessTiming(Process process, int currentTime) throws InterruptedException {
+    public static void updateProcessTiming(Process process, int currentTime) throws InterruptedException {
         process.setCompletionTime(currentTime);
         process.setTurnaroundTime(process.getCompletionTime() - process.getArrivalTime());
         process.setWaitingTime(process.getTurnaroundTime() - process.getCpuTime());
-        process.setStatus("Completed");
     }
-
     /**
      * Updates the UI with the current status of the process.
      *

@@ -20,7 +20,7 @@ public class FCFS {
     public static void runFCFS(ObservableList<Process> processList, ObservableList<ExecutionOrder> executionOrderList) {
 
         processList.sort(Comparator.comparingInt(Process::getArrivalTime));
-
+        int avg = processList.size() / 2;
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws InterruptedException {
@@ -30,11 +30,12 @@ public class FCFS {
                     if (currentTime < process.getArrivalTime()) {
                         currentTime = process.getArrivalTime();
                     }
+                    int currentIndex = process.getArrivalTime();
 
                     process.setStatus("Running");
                     Utils.updateUI(process);
 
-                    Thread.sleep(1000);
+                    Thread.sleep(2000);
 
                     currentTime += process.getCpuTime(); // aka burst time
 
@@ -45,6 +46,19 @@ public class FCFS {
 
                     process.setTurnaroundTime(turnaroundTime);
                     process.setWaitingTime(waitingTime);
+
+                    if (currentIndex == avg) {
+                        process.setStatus("Waiting");
+                        Thread.sleep(2000);
+                        process.setStatus("Ready");
+                    }
+
+                    Thread.sleep(1000);
+                    process.setStatus("Running");
+
+                    Thread.sleep(2000);
+
+                    process.setStatus("Completed");
 
                     ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(),
                             process.getArrivalTime(), process.getCpuTime());

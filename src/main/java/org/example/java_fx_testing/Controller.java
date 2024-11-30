@@ -126,6 +126,11 @@ public class Controller {
 
     @FXML
     public void handleRunFCFSButtonAction(ActionEvent actionEvent) throws InterruptedException {
+        if (processList.size() > 0) {
+            for (Process process : processList) {
+                process.setStatus("Ready");
+            }
+        }
         FCFS.runFCFS(processList, executionOrderList);
         if (executionOrderList.size() != 0)
             executionOrderList.clear();
@@ -135,6 +140,11 @@ public class Controller {
 
     @FXML
     public void handleRunSJFButtonAction(ActionEvent actionEvent) {
+        if (processList.size() > 0) {
+            for (Process process : processList) {
+                process.setStatus("Ready");
+            }
+        }
         SJF.shortestJobFirst(processList, executionOrderList);
         if (executionOrderList.size() != 0)
             executionOrderList.clear();
@@ -143,6 +153,11 @@ public class Controller {
 
     @FXML
     public void handleRunRRButtonAction(ActionEvent actionEvent) {
+        if (processList.size() > 0) {
+            for (Process process : processList) {
+                process.setStatus("Ready");
+            }
+        }
         RR.runRoundRobin(processList, executionOrderList, Integer.parseInt(timeQuantumField.getText()));
         if (executionOrderList.size() != 0)
             executionOrderList.clear();
@@ -150,6 +165,11 @@ public class Controller {
 
     @FXML
     public void handleRunPriorityButtonAction(ActionEvent actionEvent) {
+        if (processList.size() > 0) {
+            for (Process process : processList) {
+                process.setStatus("Ready");
+            }
+        }
         Priority.runPriority(processList, executionOrderList);
         if (executionOrderList.size() != 0)
             executionOrderList.clear();
