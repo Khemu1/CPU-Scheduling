@@ -1,56 +1,98 @@
 package algos;
 
+import java.util.Comparator;
+import algos.FCFS;
+
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import utils.Utils;
 
 public class SJF {
 
     /**
-     * Executes the Shortest Job First (SJF) scheduling for a list of processes.
-     * This method provides the structure for handling the SJF scheduling logic
+     * Tries to Executes the Shortest Job First (SJF) scheduling for a list of
+     * processes.
+     * if all the cpu times are equal then it will use the FCFS scheduling
      * and updates the UI to reflect the current status of processes.
      *
      * @param processList        An ObservableList of processes to be scheduled.
-     * @param executionOrderList An ObservableList to keep track of the execution order of processes.
-     *
-     * Additional parameters may be added as needed.
+     * @param executionOrderList An ObservableList to keep track of the execution
+     * 
      */
-    public static void shortestJobFirst(ObservableList<Process> processList, ObservableList<ExecutionOrder> executionOrderList) {
+    public static void shortestJobFirst(ObservableList<Process> processList,
+            ObservableList<ExecutionOrder> executionOrderList) {
 
-        // Create a background task to run the SJF scheduling
-        Task<Void> task = new Task<Void>() {
+        Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws InterruptedException {
-                int currentTime = 0; // Initialize the current time for scheduling
 
-                // Process scheduling logic will go here
-                // Ensure to update the UI using Utils.updateUI(process) when changing the process status.
-
-                // Example structure for SJF scheduling implementation
-                /*
-                while (!processList.isEmpty()) {
-                    // Sort processList based on CPU time (shortest job first)
-                    // Iterate over each process in the sorted processList
-                    for (Process process : processList) {
-                        // Check if the process is ready to run
-                        // If it is ready, set the status to 'Running'
-                        // Update the UI and process status by calling Utils.updateUI(process)
-
-                        // Simulate running the process for its required CPU time
-                        // Update the currentTime and process timing using Utils.updateProcessTiming(process)
-
-                        // If the process is complete, remove it from processList and add to executionOrderList
-                        // If not complete, leave it in the processList for the next iteration
-                    }
+                if (processList.isEmpty()) {
+                    return null;
                 }
-                */
 
-                return null; // Return null when the task is complete
+                boolean areAllCpuTimesEqual = processList.stream()
+                        .map(Process::getCpuTime)
+                        .distinct()
+                        .count() == 1;
+
+                if (areAllCpuTimesEqual) {
+                    FCFS.runFCFS(processList, executionOrderList);
+                    return null;
+                }
+
+                processList.sort(Comparator.comparingInt(Process::getCpuTime));
+
+                scheduleProcesses(processList, executionOrderList);
+                return null;
             }
         };
 
-        // Start the task in a new thread to avoid blocking the UI
-        // don't touch it
         new Thread(task).start();
+    }
+
+    private static void scheduleProcesses(ObservableList<Process> processList,
+            ObservableList<ExecutionOrder> executionOrderList) throws InterruptedException {
+
+        int currentTime = 0;
+        int avg = processList.size() / 2;
+
+        for (Process process : processList) {
+            int currentIndex = process.getArrivalTime();
+
+            if (currentTime < process.getArrivalTime()) {
+                currentTime = process.getArrivalTime();
+            }
+
+            process.setStatus("Running");
+            Utils.updateUI(process);
+
+            Utils.sleepWithCatch(2000);
+            currentTime += process.getCpuTime();
+
+            Utils.updateProcessTiming(process, currentTime);
+
+            int turnaroundTime = currentTime - process.getArrivalTime();
+            int waitingTime = turnaroundTime - process.getCpuTime();
+
+            process.setTurnaroundTime(turnaroundTime);
+            process.setWaitingTime(waitingTime);
+
+            if (currentIndex == avg) {
+                process.setStatus("Waiting");
+                Utils.sleepWithCatch(2000);
+                process.setStatus("Ready");
+            }
+
+            Utils.sleepWithCatch(2000);
+            process.setStatus("Running");
+
+            Utils.sleepWithCatch(2000);
+
+            process.setStatus("Completed");
+
+            ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(),
+                    process.getArrivalTime(), process.getCpuTime());
+            executionOrderList.add(executionOrder);
+        }
     }
 }

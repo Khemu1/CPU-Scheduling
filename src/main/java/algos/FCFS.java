@@ -26,6 +26,10 @@ public class FCFS {
             protected Void call() throws InterruptedException {
                 int currentTime = 0;
 
+                if (processList.isEmpty()) {
+                    return null;
+                }
+
                 for (Process process : processList) {
                     if (currentTime < process.getArrivalTime()) {
                         currentTime = process.getArrivalTime();
@@ -35,7 +39,7 @@ public class FCFS {
                     process.setStatus("Running");
                     Utils.updateUI(process);
 
-                    Thread.sleep(2000);
+                    Utils.sleepWithCatch(2000);
 
                     currentTime += process.getCpuTime(); // aka burst time
 
@@ -49,14 +53,14 @@ public class FCFS {
 
                     if (currentIndex == avg) {
                         process.setStatus("Waiting");
-                        Thread.sleep(2000);
+                        Utils.sleepWithCatch(2000);
                         process.setStatus("Ready");
                     }
 
-                    Thread.sleep(1000);
+                    Utils.sleepWithCatch(2000);
                     process.setStatus("Running");
 
-                    Thread.sleep(2000);
+                    Utils.sleepWithCatch(2000);
 
                     process.setStatus("Completed");
 

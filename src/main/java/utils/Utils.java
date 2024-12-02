@@ -8,8 +8,8 @@ public class Utils {
     /**
      * Updates the timing information for a given process.
      *
-     * @param process      The process to update.
-     * @param currentTime  The current time after the process runs.
+     * @param process     The process to update.
+     * @param currentTime The current time after the process runs.
      * @throws InterruptedException If the thread is interrupted during sleep.
      */
     public static void updateProcessTiming(Process process, int currentTime) throws InterruptedException {
@@ -17,6 +17,7 @@ public class Utils {
         process.setTurnaroundTime(process.getCompletionTime() - process.getArrivalTime());
         process.setWaitingTime(process.getTurnaroundTime() - process.getCpuTime());
     }
+
     /**
      * Updates the UI with the current status of the process.
      *
@@ -27,5 +28,18 @@ public class Utils {
         Platform.runLater(() -> {
             System.out.println("Process " + process.getProcessNumber() + " status updated to " + process.getStatus());
         });
+    }
+    
+    /**
+     * Sleeps for a given amount of time.
+     * this method is used to catch the interrupted exception
+     * @param millis
+     */
+    public static void sleepWithCatch(long millis) {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
 }

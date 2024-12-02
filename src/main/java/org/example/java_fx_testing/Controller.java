@@ -145,7 +145,10 @@ public class Controller {
                 process.setStatus("Ready");
             }
         }
-        SJF.shortestJobFirst(processList, executionOrderList);
+
+        ObservableList<Process> copy = FXCollections.observableArrayList(processList);
+
+        SJF.shortestJobFirst(copy, executionOrderList);
         if (executionOrderList.size() != 0)
             executionOrderList.clear();
 
