@@ -17,73 +17,74 @@ public class RR {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws InterruptedException {
-                int currentTime = 0;
+                int currentTime = 0; // Keeps track of the current time
 
                 if (processList.isEmpty()) {
-                    return null;
+                    return null; // Exit if there are no processes
                 }
 
-                // Create a queue for the processes
+                // Initialize the ready queue with all the processes
                 ObservableList<Process> readyQueue = javafx.collections.FXCollections.observableArrayList(processList);
 
                 while (!readyQueue.isEmpty()) {
-                    // Iterate through the ready queue
-                    for (int i = 0; i < readyQueue.size(); ) {
-                        Process process = readyQueue.get(i);
+                    // Temporary queue to hold processes for the next iteration
+                    ObservableList<Process> tempQueue = javafx.collections.FXCollections.observableArrayList();
 
-                        // Set process status to "Running" and update UI
+                    for (Process process : readyQueue) {
+                        // Set the process status to "Running" and update the UI
                         process.setStatus("Running");
                         Utils.updateUI(process);
 
+                        // Get the remaining CPU burst time and calculate the execution time
                         int burstTime = process.getCpuTime();
                         int executionTime = Math.min(burstTime, timeQuantum);
 
                         // Simulate execution for the time quantum or remaining burst time
-                        Utils.sleepWithCatch(2000); // Simulate the process running
+                        Utils.sleepWithCatch(2000); // Simulate process execution
                         currentTime += executionTime;
 
-                        // Update remaining burst time
+                        // Decrease the remaining burst time
                         burstTime -= executionTime;
 
                         if (burstTime > 0) {
-                            // Process not finished, update its CPU time and requeue
+                            // Process is not finished, update its CPU time and requeue it
+                            process.setCpuTime(burstTime);
                             process.setStatus("Ready");
-                            readyQueue.add(new Process(
-                                process.getProcessNumber(),
-                                burstTime, // Remaining CPU time
-                                process.getPriority(),
-                                process.getArrivalTime()
-                            ));
+                            Utils.updateUI(process); // Update the UI for the Ready status
+                            tempQueue.add(process); // Add back to the queue
                         } else {
                             // Process finished execution
                             process.setStatus("Completed");
-                            Utils.updateProcessTiming(process, currentTime);
+                            Utils.updateUI(process);
 
+                            // Calculate turnaround time and waiting time
                             int turnaroundTime = currentTime - process.getArrivalTime();
-                            int waitingTime = turnaroundTime - process.getCpuTime();
+                            int waitingTime = turnaroundTime - process.getOriginalCpuTime(); // Use original burst time for waiting time
 
                             process.setTurnaroundTime(turnaroundTime);
                             process.setWaitingTime(waitingTime);
 
-                            // Add to execution order list
+                            // Record the execution order
                             ExecutionOrder executionOrder = new ExecutionOrder(
                                 currentTime,
                                 process.getProcessNumber(),
                                 process.getArrivalTime(),
-                                process.getCpuTime()
+                                process.getOriginalCpuTime() // Original burst time
                             );
                             executionOrderList.add(executionOrder);
                         }
-
-                        // Remove the current process from the ready queue
-                        readyQueue.remove(i);
                     }
+
+                    // Clear the ready queue and prepare for the next iteration
+                    readyQueue.clear();
+                    readyQueue.addAll(tempQueue);
                 }
 
-                return null;
+                return null; // Task is complete
             }
         };
 
+        // Start the task in a new thread
         new Thread(task).start();
     }
 }
