@@ -13,7 +13,7 @@ public class Process {
      * total CPU time required for the process to execute.
      * This value represents the burst time needed by the process.
      */
-    private final int cpuTime;
+    private  int cpuTime;
 
     /**
      * priority level of the process.
@@ -119,5 +119,9 @@ public class Process {
 
     public void setStatus(String status) {
         this.status.set(status);
+    }
+
+    public void setCpuTime(int cpuTime) {
+        this.cpuTime = cpuTime;
     }
 }
