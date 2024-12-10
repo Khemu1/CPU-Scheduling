@@ -2,55 +2,70 @@ package algos;
 
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import utils.Utils;
+
+import java.util.Comparator;
 
 public class Priority {
 
     /**
-     * Executes the Priority Scheduling for a list of processes.
-     * This method provides the structure for handling the Priority scheduling logic
-     * and updates the UI to reflect the current status of processes.
+     * Executes the Priority non-preemptive Scheduling for a list of processes.
+     * The processes are first sorted by priority, then executed using FCFS logic.
      *
      * @param processList        An ObservableList of processes to be scheduled.
      * @param executionOrderList An ObservableList to keep track of the execution order of processes.
-     *
-     * Additional parameters may be added as needed.
      */
     public static void runPriority(ObservableList<Process> processList, ObservableList<ExecutionOrder> executionOrderList) {
 
-        // Create a background task to run the Priority scheduling
-        Task<Void> task = new Task<Void>() {
+        // Sort the process list by priority (lower value = higher priority)
+        processList.sort(Comparator.comparingInt(Process::getPriority));
+
+        // Use the same FCFS logic to execute processes
+        Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws InterruptedException {
                 int currentTime = 0; // Initialize the current time for scheduling
 
-                // Process scheduling logic will go here
-                // Ensure to update the UI using Utils.updateUI(process) when changing the process status.
-
-                // Example structure for Priority scheduling implementation
-                /*
-                while (!processList.isEmpty()) {
-                    // Sort processList based on priority
-                    // Iterate over each process in the processList
-                    for (Process process : processList) {
-                        // Check if the process is ready to run
-                        // If it is ready, set the status to 'Running'
-                        // Update the UI and process status by calling Utils.updateUI(process)
-
-                        // Simulate running the process for its required CPU time
-                        // Update the currentTime and process timing using Utils.updateProcessTiming(process)
-
-                        // If the process is complete, remove it from processList and add to executionOrderList
-                        // If not complete, leave it in the processList for the next iteration
+                for (Process process : processList) {
+                    // Adjust the current time if necessary
+                    if (currentTime < process.getArrivalTime()) {
+                        currentTime = process.getArrivalTime();
                     }
-                }
-                */
 
-                return null; // Return null when the task is complete
+                    // Update process status to "Running" and update the UI
+                    process.setStatus("Running");
+                    Utils.updateUI(process);
+
+                    // Simulate process execution
+                    Utils.sleepWithCatch(2000);
+
+                    // Update current time after the process is completed
+                    currentTime += process.getCpuTime();
+
+                    // Calculate and set turnaround and waiting times
+                    process.setCompletionTime(currentTime);
+                    process.setTurnaroundTime(currentTime - process.getArrivalTime());
+                    process.setWaitingTime(process.getTurnaroundTime() - process.getCpuTime());
+
+                    // Update process status to "Completed" and update the UI
+                    process.setStatus("Completed");
+                    Utils.updateUI(process);
+
+                    // Add to execution order list
+                    ExecutionOrder executionOrder = new ExecutionOrder(
+                            currentTime,
+                            process.getProcessNumber(),
+                            process.getArrivalTime(),
+                            process.getCpuTime()
+                    );
+                    executionOrderList.add(executionOrder);
+                }
+
+                return null; // Task completed
             }
         };
 
         // Start the task in a new thread to avoid blocking the UI
-        // don't touch it
         new Thread(task).start();
     }
 }
