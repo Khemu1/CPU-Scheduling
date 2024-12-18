@@ -2,12 +2,12 @@ package algos;
 
 public class ExecutionOrder {
     private final int completionTime;
-    private final String processNumber;
+    private final int processNumber;
     private final int arrivalTime;
     private final int turnaroundTime;
     private final int waitingTime;
 
-    public ExecutionOrder(int completionTime, String processNumber, int arrivalTime, int burstTime) {
+    public ExecutionOrder(int completionTime, int processNumber, int arrivalTime, int burstTime) {
         this.completionTime = completionTime;
         this.processNumber = processNumber;
         this.arrivalTime = arrivalTime;
@@ -20,7 +20,7 @@ public class ExecutionOrder {
         return completionTime;
     }
 
-    public String getProcessNumber() {
+    public int getProcessNumber() {
         return processNumber;
     }
 

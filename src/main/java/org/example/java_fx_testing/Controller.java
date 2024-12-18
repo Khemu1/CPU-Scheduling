@@ -16,7 +16,7 @@ public class Controller {
     @FXML
     private TableView<Process> processTable;
     @FXML
-    private TableColumn<Process, String> processNumberColumn;
+    private TableColumn<Process, Number> processNumberColumn;
     @FXML
     private TableColumn<Process, Number> cpuTimeColumn;
     @FXML
@@ -49,7 +49,7 @@ public class Controller {
     private TableColumn<ExecutionOrder, Number> waitingTimeColumn;
 
     // Observable list to hold processes
-    private final ObservableList<Process> processList = FXCollections.observableArrayList();
+    public final ObservableList<Process> processList = FXCollections.observableArrayList();
     private final ObservableList<ExecutionOrder> executionOrderList = FXCollections.observableArrayList();
 
     // Observable list to hold processes
@@ -100,13 +100,12 @@ public class Controller {
 
     @FXML
     private void handleAddProcessButtonAction() {
-        String processNumber = processNumberField.getText();
         int cpuTime = Integer.parseInt(cpuTimeField.getText());
         int priority = Integer.parseInt(priorityField.getText());
 
         int arrivalTime = processList.size();
 
-        Process newProcess = new Process(processNumber, cpuTime, priority, arrivalTime);
+        Process newProcess = new Process(arrivalTime, cpuTime, priority, arrivalTime);
 
         processList.add(newProcess);
 

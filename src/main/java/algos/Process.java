@@ -7,7 +7,7 @@ public class Process {
     /**
      * unique identifier for the process.
      */
-    private final String processNumber;
+    private final int processNumber;
 
     /**
      * total CPU time required for the process to execute.
@@ -59,7 +59,7 @@ public class Process {
      * @param arrivalTime   The time at which the process arrives in the ready
      *                      queue.
      */
-    public Process(String processNumber, int cpuTime, int priority, int arrivalTime) {
+    public Process(int processNumber, int cpuTime, int priority, int arrivalTime) {
         this.processNumber = processNumber;
         this.cpuTime = cpuTime;
         this.priority = priority;
@@ -68,7 +68,7 @@ public class Process {
     }
 
     // getters
-    public String getProcessNumber() {
+    public int getProcessNumber() {
         return processNumber;
     }
 

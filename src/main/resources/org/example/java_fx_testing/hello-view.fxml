@@ -25,10 +25,7 @@
 
     <center>
         <VBox alignment="CENTER" prefWidth="600" spacing="10" styleClass="vbox">
-            <HBox spacing="10" styleClass="hbox">
-                <Label text="Process Number:" />
-                <TextField fx:id="processNumberField" prefWidth="100" styleClass="text-field" />
-            </HBox>
+  
             <HBox spacing="10" styleClass="hbox">
                 <Label text="CPU Time:" />
                 <TextField fx:id="cpuTimeField" prefWidth="100" styleClass="text-field" />
@@ -59,8 +56,8 @@
         <VBox spacing="10">
             <TableView fx:id="processTable" fixedCellSize="25.0" prefWidth="600" styleClass="table-view" BorderPane.alignment="TOP_LEFT">
                 <columns>
-                    <TableColumn fx:id="arrivalTimeColumnProcess" editable="false" prefWidth="100" sortable="false" text="Arrival Time" />
                     <TableColumn fx:id="processNumberColumn" editable="false"  prefWidth="100" sortable="false" text="Process Number" />
+                    <TableColumn fx:id="arrivalTimeColumnProcess" editable="false" prefWidth="100" sortable="false" text="Arrival Time" />
                     <TableColumn fx:id="cpuTimeColumn" prefWidth="100" sortable="false" editable="false" text="CPU Time" />
                     <TableColumn fx:id="priorityColumn" prefWidth="100" sortable="false" editable="false" text="Priority" />
                     <TableColumn fx:id="statusColumn" prefWidth="100" sortable="false" editable="false" text="Status" />
@@ -72,8 +69,8 @@
 
             <TableView fx:id="executionOrderTable" fixedCellSize="25.0" prefWidth="600" styleClass="table-view">
                 <columns>
-                    <TableColumn fx:id="arrivalTimeColumn" editable="false" prefWidth="100" sortable="false" text="Arrival Time" />
                     <TableColumn fx:id="executionProcessColumn" editable="false" prefWidth="100" sortable="false" text="Process Number" />
+                    <TableColumn fx:id="arrivalTimeColumn" editable="false" prefWidth="100" sortable="false" text="Arrival Time" />
                     <TableColumn fx:id="executionOrderColumn" editable="false" prefWidth="100" sortable="false" text="Completion Time" />
                     <!-- New Columns for Turnaround Time and Waiting Time -->
                     <TableColumn fx:id="turnaroundTimeColumn" editable="false" prefWidth="100" sortable="false" text="Turnaround Time" />
