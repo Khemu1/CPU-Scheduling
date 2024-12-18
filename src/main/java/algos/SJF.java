@@ -1,7 +1,6 @@
 package algos;
 
 import java.util.Comparator;
-import algos.FCFS;
 
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -26,21 +25,8 @@ public class SJF {
             @Override
             protected Void call() throws InterruptedException {
 
-                if (processList.isEmpty()) {
-                    return null;
-                }
-
-                boolean areAllCpuTimesEqual = processList.stream()
-                        .map(Process::getCpuTime)
-                        .distinct()
-                        .count() == 1;
-
-                if (areAllCpuTimesEqual) {
-                    FCFS.runFCFS(processList, executionOrderList);
-                    return null;
-                }
-
-                processList.sort(Comparator.comparingInt(Process::getCpuTime));
+                processList.sort(Comparator.comparingInt(Process::getCpuTime)
+                        .thenComparingInt(Process::getArrivalTime));
 
                 scheduleProcesses(processList, executionOrderList);
                 return null;
