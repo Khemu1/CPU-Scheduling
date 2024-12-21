@@ -34,38 +34,42 @@ public class FCFS {
                     if (currentTime < process.getArrivalTime()) {
                         currentTime = process.getArrivalTime();
                     }
-                    int currentIndex = process.getArrivalTime();
+
 
                     process.setStatus("Running");
                     Utils.updateUI(process);
 
+
                     Utils.sleepWithCatch(2000);
 
-                    currentTime += process.getCpuTime(); // aka burst time
+
+                    currentTime += process.getCpuTime(); 
+
 
                     Utils.updateProcessTiming(process, currentTime);
+
 
                     int turnaroundTime = currentTime - process.getArrivalTime();
                     int waitingTime = turnaroundTime - process.getCpuTime();
 
+
                     process.setTurnaroundTime(turnaroundTime);
                     process.setWaitingTime(waitingTime);
 
-                    if (currentIndex == avg) {
+
+                    if (process.getArrivalTime() == avg) {
                         process.setStatus("Waiting");
                         Utils.sleepWithCatch(2000);
                         process.setStatus("Ready");
                     }
 
-                    Utils.sleepWithCatch(2000);
-                    process.setStatus("Running");
 
                     Utils.sleepWithCatch(2000);
-
                     process.setStatus("Completed");
 
                     ExecutionOrder executionOrder = new ExecutionOrder(currentTime, process.getProcessNumber(),
                             process.getArrivalTime(), process.getCpuTime());
+
                     executionOrderList.add(executionOrder);
                 }
                 return null;
