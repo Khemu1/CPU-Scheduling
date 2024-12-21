@@ -54,10 +54,10 @@ public class Controller {
 
     // Observable list to hold processes
 
+
+
     @FXML
-
     public void initialize() {
-
         // Initialize process table columns
         arrivalTimeColumnProcess.setCellValueFactory(new PropertyValueFactory<>("arrivalTime"));
         processNumberColumn.setCellValueFactory(new PropertyValueFactory<>("processNumber"));
@@ -67,9 +67,9 @@ public class Controller {
 
         processTable.setItems(processList);
 
+        // Ensure the width of the columns adjust based on the available space
         processTable.widthProperty().addListener((obs, oldWidth, newWidth) -> {
             double tableWidth = newWidth.doubleValue();
-
             arrivalTimeColumnProcess.setPrefWidth(tableWidth * 0.2);
             processNumberColumn.setPrefWidth(tableWidth * 0.2);
             cpuTimeColumn.setPrefWidth(tableWidth * 0.2);
