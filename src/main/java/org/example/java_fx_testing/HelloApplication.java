@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -21,14 +20,15 @@ public class HelloApplication extends Application {
         // Set the root of the ScrollPane as the content from the FXML
         scrollPane.setContent(fxmlLoader.load());
 
-        // Optionally, you can configure the scroll pane properties (e.g., set fit to width)
+        // Optionally, you can configure the scroll pane properties (e.g., set fit to
+        // width)
         scrollPane.setFitToWidth(true);
 
         // Create the scene and set the scrollPane as its root
         Scene scene = new Scene(scrollPane, 320, 240);
 
         // Set the title and scene for the stage
-        stage.setTitle("CPU S");
+        stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
     }
